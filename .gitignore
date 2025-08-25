@@ -1,0 +1,7 @@
+.auctex-auto
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+reveal.js
+_minted*
+*.dvi
