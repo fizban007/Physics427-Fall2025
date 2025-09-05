@@ -153,12 +153,13 @@ if (x != x) {
 
         <section>
           <h2>Fixed Point Iteration</h2>
-          <p>Given $f(x) = 0$, we can rewrite it as $x = g(x)$, where $g(x) = f(x) - x$.</p>
+          <p>Given $f(x) = 0$, we can rewrite it as $x = g(x)$, where $g(x) = f(x) + x$.</p>
           <p>Then, we can find the solution by iterating:</p>
           $$
-          x_{n+1} = g(x_n) = f(x_n) - x_n
+          x_{n+1} = g(x_n) = f(x_n) + x_n
           $$
           <p>until $x_{n+1} - x_n$ is small enough.</p>
+          <p class="fragment">Note that the method of going from $f(x)$ to $g(x)$ is not unique, and may strongly affect convergence.</p>
         </section>
 
         <section>
