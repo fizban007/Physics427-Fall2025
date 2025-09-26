@@ -91,15 +91,15 @@
           <p>For the Dormand-Prince method, a 4th order interpolation method can
             be implemented using the intermediate derivatives $k_i$:</p>
           $$
-          y(x_n + \theta h) = r_1 + \theta(r_2 + (1 - \theta)(r_3 + \theta(r_4 + (1 - \theta) r_5)))
+          \mathbf{y}(x_n + \theta h) = \mathbf{r}_1 + \theta(\mathbf{r}_2 + (1 - \theta)(\mathbf{r}_3 + \theta(\mathbf{r}_4 + (1 - \theta) \mathbf{r}_5)))
           $$
           <p class="fragment">
             where
             $$
             \begin{split}
-            r_1 &= y_n,\quad r_2 = y_{n+1} - y_n, \\
-            r_3 &= y_n + hf_n - y_{n+1},\quad r_4 = 2(y_{n+1} - y_n) - h(f_n + f_{n+1}), \\
-            r_5 &= h(d_1 f_n + d_3 k_3 + d_4 k_4 + d_5 k_5 + d_6 k_6 + d_7 k_7)
+            \mathbf{r}_1 &= \mathbf{y}_n,\quad \mathbf{r}_2 = \mathbf{y}_{n+1} - \mathbf{y}_n, \\
+            \mathbf{r}_3 &= \mathbf{y}_n + h\mathbf{k}_1 - \mathbf{y}_{n+1},\quad \mathbf{r}_4 = 2(\mathbf{y}_{n+1} - \mathbf{y}_n) - h(\mathbf{k}_1 + \mathbf{k}_7), \\
+            \mathbf{r}_5 &= h(d_1 \mathbf{k}_1 + d_3 \mathbf{k}_3 + d_4 \mathbf{k}_4 + d_5 \mathbf{k}_5 + d_6 \mathbf{k}_6 + d_7 \mathbf{k}_7)
             \end{split}
             $$
           </p>
