@@ -246,21 +246,6 @@
         </section>
 
         <section>
-          <h2>Leapfrog Method</h2>
-          <p>Time-reversal symmetry typically means that the method conserves energy. This is the result
-            of integrating a nonlinear pendulum with midpoint method (RK2) and leapfrog method:</p>
-          <img src="energy-rk2-vs-verlet.png" alt="energy" width="60%">
-        </section>
-
-        <section>
-          <h2>Symplectic Methods</h2>
-          <p>Symplectic methods are defined when solving a Hamiltonian problem.
-          They preserve the symplectic structure of the Hamiltonian dynamics,
-          preserving phase space volume:</p>
-          <img src="phase-space.png" alt="energy" width="40%">
-        </section>
-
-        <section>
           <h2>Verlet Integration</h2>
           <p>The leapfrog method is also known as <em>Verlet integration</em>. Verlet
             integraion typically refers to a special case for second-order
@@ -284,6 +269,21 @@
           v(t + h) &= v(t + h/2) + (h/2) f(x(t + h))
           \end{align}
           $$
+        </section>
+
+        <section>
+          <h2>Energy Conservation</h2>
+          <p>Time-reversal symmetry typically means that the method conserves energy. This is the result
+            of integrating a nonlinear pendulum with midpoint method (RK2) and leapfrog method:</p>
+          <img src="energy-rk2-vs-verlet.png" alt="energy" width="60%">
+        </section>
+
+        <section>
+          <h2>Symplectic Methods</h2>
+          <p>Symplectic methods are defined when solving a Hamiltonian problem.
+          They preserve the symplectic structure of the Hamiltonian dynamics,
+          preserving phase space volume:</p>
+          <img src="phase-space.png" alt="energy" width="40%">
         </section>
 
         <section>
