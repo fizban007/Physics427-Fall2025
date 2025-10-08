@@ -40,15 +40,16 @@
             $$
             v_{n+\frac{3}{2}} = v_{n + 1} + \frac{F(x_{n+1})}{m}\frac{\Delta t}{2}
             $$
-            which can be grouped with the last half kick of the previous step to form a full step from $n + \frac{1}{2}$ to $n + \frac{3}{2}$.
+            which can be grouped with the last half kick of the previous step to
+            form a full step from $n + \frac{1}{2}$ to $n + \frac{3}{2}$.
           </p>
         </section>
 
         <section>
           <h2>Symplectic Methods</h2>
           <p>Another symplectic method is the so-called "Boris pusher" widely
-          used to calculate the trajectory of charged particles in an
-          electromagnetic field. The equations to solve are:
+            used to calculate the trajectory of charged particles in an
+            electromagnetic field. The equations to solve are:
             $$
             \begin{align}
             \frac{d\mathbf{x}}{dt} &= \mathbf{v} \\
@@ -71,12 +72,15 @@
             \end{align}
             $$
           </p>
-          <p class="fragment">However, the right hand side unfortunately involves $\mathbf{v}_{n+1}$. Does this mean it's an implicit method and requires solving the equations numerically?</p>
+          <p class="fragment">However, the right hand side unfortunately
+            involves $\mathbf{v}_{n+1}$. Does this mean it's an implicit method
+            and requires solving the equations numerically?</p>
         </section>
 
         <section>
           <h2>Boris Algorithm</h2>
-          <p>Boris's contribution was that he found a way to solve the discretized equations using minimal amount of computation:</p>
+          <p>Boris's contribution was that he found a way to solve the
+            discretized equations using minimal amount of computation:</p>
           $$
           \begin{align}
           \mathbf{v}^- &= \mathbf{v}_n + \frac{q\mathbf{E}}{m}\frac{\Delta t}{2} \\
@@ -160,7 +164,7 @@
           <p>Apparently an 8th order Gauss-Jackson integrator is used from the
             1960s to this day. It has extraordinary error accumulation
             properties. There is a recent implementation on <a
-            href="https://github.com/lorcan2440/Gauss-Jackson-Integrator">Github</a>.
+                                                              href="https://github.com/lorcan2440/Gauss-Jackson-Integrator">Github</a>.
             I downloaded the code and compared it with RK4.</p>
           <img src="gj8.png" width="80%">
         </section>
@@ -198,10 +202,8 @@
         <section>
           <h2>Python Library</h2>
           <p>Before we conclude our discussion of initial value problems for
-          ODEs, I'd like to introduce the Python library:
-          <code>scipy.solve_ivp</code>. <a
-          href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html">Official
-          documentation</a></p>
+            ODEs, I'd like to introduce the Python library:
+            <code>scipy.solve_ivp</code>. <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html">Official documentation</a></p>
         </section>
 
       </div>
