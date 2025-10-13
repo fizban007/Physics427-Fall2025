@@ -40,12 +40,13 @@
           <p>Last time, we discussed the shooting method for converting boundary
             value problems into initial value problems.</p>
           <ol>
-            <li class="fragment">Start with an initial guess of $y'(a)$. Compute $y(b)$ using an
-              ODE solver like RK45 Dormand Prince. We call this $y_1$.</li>
-            <li class="fragment">Modify the initial guess with a small increment, $y'(a) + h$.
-              Compute $y(b)$ again. We call this $y_2$.</li>
-            <li class="fragment">The "derivative" of this procedure can now be estimated as $F' = (y_2
-              - y_1) / h$.</li>
+            <li class="fragment">Start with an initial guess of $y'(a)$. Compute
+              $y(b)$ using an ODE solver like RK45 Dormand Prince. We call this
+              $y_1$.</li>
+            <li class="fragment">Modify the initial guess with a small
+              increment, $y'(a) + h$. Compute $y(b)$ again. We call this $y_2$.</li>
+            <li class="fragment">The "derivative" of this procedure can now be
+              estimated as $F' = (y_2 - y_1) / h$.</li>
             <div class="fragment">
               <li>Form a new guess of $y'(a)$ using Newton's rule:</li>
               $$
