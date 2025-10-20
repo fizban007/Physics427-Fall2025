@@ -117,7 +117,72 @@
           <h2>Gram-Schmidt Process</h2>
           <p>The algorithm I described is called the Gram-Schmidt process. Unfortunately
           this process is numerically unstable, especially for large
-          matrices. The often implemented QR decomposition algorithm is instead
+            matrices.</p>
+          <p class="fragment">
+            Consider the following matrix:
+          $$
+            \mathbf{A} = \begin{pmatrix}
+            1 & 1 & 1 \\
+            \epsilon & 0 & 0 \\
+            0 & \epsilon & 0 \\
+            0 & 0 & \epsilon
+            \end{pmatrix}
+          $$
+          </p>
+        </section>
+
+        <section>
+          <h2>Gram-Schmidt Process</h2>
+          <p>Let's apply the Gram-Schmidt process to this matrix. The first
+          vector is:</p>
+          $$
+            \mathbf{u}_1 = \mathbf{a}_1 = \begin{pmatrix}
+            1 \\
+            \epsilon \\
+            0 \\
+            0
+            \end{pmatrix},\quad
+            \mathbf{e}_1 = \frac{1}{\sqrt{1 + \epsilon^2}}\begin{pmatrix}
+            1 \\
+            \epsilon \\
+            0 \\
+            0
+            \end{pmatrix}
+          $$
+          <p class="fragment">The second vector is:
+          $$
+            \mathbf{u}_2 = \mathbf{a}_2 - (\mathbf{e}_1\cdot\mathbf{a}_2)\mathbf{e}_1 = \begin{pmatrix}
+            \displaystyle 1 - \frac{1}{1 + \epsilon^2} \\
+            \displaystyle -\frac{\epsilon}{1 + \epsilon^2} \\
+            \epsilon \\
+            0
+            \end{pmatrix} = \begin{pmatrix}
+            \displaystyle \frac{\epsilon^2}{1 + \epsilon^2} \\
+            \displaystyle -\frac{\epsilon}{1 + \epsilon^2} \\
+            \epsilon \\
+            0
+            \end{pmatrix} \approx \begin{pmatrix}
+            0 \\
+            -\epsilon \\
+            \epsilon \\
+            0
+            \end{pmatrix},\quad \mathbf{e}_2 \approx \frac{1}{\sqrt{2}}\begin{pmatrix}
+            0 \\
+            -1 \\
+            1 \\
+            0
+            \end{pmatrix}
+          $$
+          </p>
+        </section>
+
+        <section>
+          <h2>Gram-Schmidt Process</h2>
+          <p>Continuing this process, error inevitably builds up due to
+          numerical precision. Naively implemented Gram-Schmidt process can
+          easily lead to $10^{-2}$ relative error, instead of the $10^{-15}$
+          machine precision that we expect.</p>
+          <p class="fragment">The often implemented QR decomposition algorithm is instead
           based on <em>Householder transformations</em>.</p>
           <p class="fragment">The Gram-Schmidt process uses repeated projections
             to get rid of undesired components of the matrix. Householder transformations use <em>reflections</em> instead.</p>
@@ -126,7 +191,7 @@
         <section>
           <h2>Householder Transformations</h2>
           <p>Given an arbitrary matrix $\mathbf{A}$, the goal is to use orthogonal transformations
-          to make it an upper triangular matrix. We can start with a single vector $\mathbf{a}$
+          to make it an upper triangular matrix. We start with a single vector $\mathbf{a}$
           and attempt to construct a transformation that sets all its components to zero except the
           first one:
           $$
@@ -181,7 +246,7 @@
             orthogonal matrix $\mathbf{Q}$ is the product of all the Householder
             matrices, since $\mathbf{P}_i$ is its own inverse:
             $$
-            \mathbf{P}_n\mathbf{P}_{n-1}\dots\mathbf{P}_2\mathbf{P}_1\mathbf{A} = \mathbf{R},\quad \mathbf{A} = (\mathbf{P}_1\mathbf{P}_2\dots\mathbf{P}_n)\mathbf{R} = \mathbf{Q}\mathbf{R}
+            \mathbf{P}_{n-1}\dots\mathbf{P}_2\mathbf{P}_1\mathbf{A} = \mathbf{R},\quad \mathbf{A} = (\mathbf{P}_1\mathbf{P}_2\dots\mathbf{P}_{n-1})\mathbf{R} = \mathbf{Q}\mathbf{R}
             $$
           </p>
         </section>
