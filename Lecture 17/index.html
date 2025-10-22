@@ -25,7 +25,7 @@
 
         <section>
           <h2>Singular Value Decomposition</h2>
-          <p>Last time, we discussed the Singular Value Decomposition. Given any
+          <p>Last time, we introduced the Singular Value Decomposition. Given any
           real $m\times n$ matrix $\mathbf{A}$, it can be decomposed as:
             $$
             \mathbf{A} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T
@@ -56,6 +56,12 @@
             The nullspace of matrix $\mathbf{A}$ is spanned by the columns of
             $\mathbf{V}$ corresponding to the zero singular values.
           </p>
+          <p class="fragment">
+            The action of matrix $\mathbf{A}$ can be understood as stretching space
+            along the directions given by the columns of $\mathbf{V}$ by amounts
+            given by the singular values, and then rotating the space into the
+            directions given by the columns of $\mathbf{U}$.
+          </p>
         </section>
 
         <section>
@@ -65,7 +71,7 @@
             <p>If any of its singular values is zero, then $\mathbf{A}$ is not invertible.</p>
           </div>
           <p class="fragment">If all singular values are non-zero, then
-          $\mathbf{A}$ is invertible. In this case, LU decomposition is the
+          $\mathbf{A}$ is invertible. In this case, LU decomposition is still the
           preferred way to solve equations like $\mathbf{A}\mathbf{x} =
           \mathbf{b}$.</p>
         </section>
@@ -246,6 +252,26 @@
         <section>
           <h2>Principal Component Analysis</h2>
           <img src="pca-example.png" width="60%">
+        </section>
+
+        <section>
+          <h2>How to find the SVD of a matrix?</h2>
+          <p>A common algorithm to find the SVD of a matrix is to use the
+          eigen-decomposition of $\mathbf{A}^T\mathbf{A}$.</p>
+          <p class="fragment">
+            The columns of $\mathbf{V}$ are the eigenvectors of
+            $\mathbf{A}^T\mathbf{A}$, each normalized to unit length. Then, the
+            singular values $\sigma_i$ are the square roots of the corresponding
+            eigenvalues $\lambda_i$.
+          </p>
+          <p class="fragment">
+            Finally, the columns of $\mathbf{U}$ are obtained by:
+            $$
+            \mathbf{u}_i = \frac{1}{\sigma_i}\mathbf{A}\mathbf{v}_i
+            $$
+            If $\sigma_i = 0$, then $\mathbf{u}_i$ can be any unit vector
+            orthogonal to all other $\mathbf{u}_j$.
+          </p>
         </section>
 
       </div>
