@@ -30,19 +30,24 @@
           \frac{\partial u}{\partial t} + v \frac{\partial u}{\partial x} = 0
           $$
           <p class="fragment">Its solution is simply a function propagating along $x$ at velocity
-          $v$ that keeps its shape. We discussed two stable methods to solve this
-          equation: the Lax-Friedrichs method and the Upwind method.</p>
+          $v$ that keeps its shape. We discussed a stable method to solve this
+          equation: the Lax-Friedrichs scheme, or simply the Lax scheme.</p>
+          <p class="fragment">To ensure stability, we need to satisfy the Courant-Friedrichs-Lewy (CFL)
+          condition:
+          $$
+          v\Delta t \leq \Delta x
+          $$
+          </p>
         </section>
 
         <section>
           <h2>2nd Order Accuracy in Time</h2>
-          <p>Both the Lax scheme and the Upwind scheme are 1st order in time. How
-          do we achieve higher order time accuracy?</p>
+          <p>The Lax scheme is 1st order in time, 2nd order in space. How do we achieve higher order time accuracy?</p>
         </section>
 
         <section>
-          <h2>Staggered Leapfrog Method</h2>
-          <p>The <em>staggered leapfrog</em> method uses the following discretization:</p>
+          <h2>Staggered Leapfrog Scheme</h2>
+          <p>The <em>staggered leapfrog</em> sheme uses the following discretization:</p>
           $$
           \frac{u_j^{n+1} - u_j^{n-1}}{2\Delta t} = -v \frac{u_{j+1}^n - u_{j-1}^n}{2\Delta x}.
           $$
@@ -51,8 +56,8 @@
         </section>
 
         <section>
-          <h2>Staggered Leapfrog Method</h2>
-          <p>Let's do a stability analysis for the staggered leapfrog method:</p>
+          <h2>Staggered Leapfrog Scheme</h2>
+          <p>Let's do a stability analysis for the staggered leapfrog scheme:</p>
           <div class="fragment">
           $$
           \xi^2 - 1 = -2i\xi \frac{v\Delta t}{\Delta x}\sin k\Delta x.
@@ -70,8 +75,8 @@
         </section>
 
         <section>
-          <h2>Staggered Leapfrog Method</h2>
-          <p>The only problem with Leapfrog method is that it requires the value
+          <h2>Staggered Leapfrog Scheme</h2>
+          <p>The only problem with Leapfrog scheme is that it requires the value
           of $u^{n-1}$ in addition to $u^n$:
           $$
           \frac{u_j^{n+1} - u_j^{n-1}}{2\Delta t} = -v \frac{u_{j+1}^n - u_{j-1}^n}{2\Delta x}.
@@ -79,9 +84,10 @@
           </p>
           <p class="fragment">
             Typically you need to use one of the 1st order methods to jump start the solution,
-            and then use the leapfrog method to get higher order accuracy. For example, you can
-            use the Lax-Friedrichs method to get $u^{1}$ from $u^0$, and then
-            use the leapfrog method to get $u^{2}$ from $u^1$ and $u^0$.
+            and then use the leapfrog scheme to get higher order accuracy. For example, you can
+            use the Lax-Friedrichs scheme to get $u^{1}$ from $u^0$, and then
+            use the leapfrog scheme to get $u^{2}$ from $u^1$ and $u^0$. Afterwards, you can
+            keep using the leapfrog scheme.
           </p>
         </section>
 
@@ -128,8 +134,8 @@
              </section>
         -->
         <section>
-          <h2>Staggered Leapfrog Method</h2>
-          <p>Let's try to apply the staggered leapfrog method to the 1D advection equation.
+          <h2>Staggered Leapfrog Scheme</h2>
+          <p>Let's try to apply the staggered leapfrog scheme to the 1D advection equation.
           Here we again chose $v\Delta t = \Delta x$.</p>
           <video controls="" style="width: 50%;"><source src=
             "./leapfrog_gaussian.mp4" type="video/mp4"></video>
@@ -146,8 +152,8 @@
             \end{align}
             $$
           </p>
-          <p class="fragment">A common method for this application is
-          a variation of the staggered leapfrog method developed by Yee (1966).</p>
+          <p class="fragment">A common scheme for this application is
+          a variation of the staggered leapfrog scheme developed by Yee (1966).</p>
         </section>
 
         <section>
@@ -165,22 +171,22 @@
         <section>
           <h2>Staggered Yee Lattice</h2>
           <p>The Yee lattice is the cheapest method to achieve 2nd order
-          accuracy in both space and time, and the nature of the method
+          accuracy in both space and time, and the nature of the scheme
           preserves the amplitudes of all waves, making it ideal to study
           the propagation of electromagnetic waves.</p>
         </section>
 
         <section>
-          <h2>Staggered Leapfrog Method</h2>
-          <p>Let's try to apply the staggered leapfrog method to the 1D advection equation using
+          <h2>Staggered Leapfrog Scheme</h2>
+          <p>Let's try to apply the staggered leapfrog scheme to the 1D advection equation using
           a box initial condition. </p>
           <video controls="" style="width: 50%;"><source src=
             "./leapfrog_box.mp4" type="video/mp4"></video>
         </section>
 
         <section>
-          <h2>Lax-Wendroff Method</h2>
-          <p>A 2nd order method that avoids spurious oscillations is the Lax-Wendroff method. It
+          <h2>Lax-Wendroff Scheme</h2>
+          <p>A 2nd order scheme that avoids spurious oscillations is the Lax-Wendroff scheme. It
           performs the time update in two steps:</p>
           <div class="fragment">
             <p>First, we use the Lax scheme to form intermediate values $u_{j + 1/2}^{n+1/2}$:</p>
@@ -191,13 +197,13 @@
           <div class="fragment">
             <p>Then we use the leapfrog scheme to compute $u_j^{n+1}$:</p>
             $$
-            u_j^{n+1} = u_j^n - \frac{v\Delta t}{\Delta x}(u_{j+1/2}^{n+1/2} - u_{j-1/2}^{n+1/2}).
+            u_j^{n+1} = u_j^n - v\frac{u_{j+1/2}^{n+1/2} - u_{j-1/2}^{n+1/2}}{\Delta x}\Delta t.
             $$
           </div>
         </section>
 
         <section>
-          <h2>Lax-Wendroff Method</h2>
+          <h2>Lax-Wendroff Scheme</h2>
           <p>If we carry out the stability analysis for Lax-Wendroff, we can get:</p>
           $$
           \xi = 1 - i\alpha \sin k\Delta x - \alpha^2(1 - \cos k\Delta x).
@@ -218,14 +224,14 @@
         </section>
 
         <section>
-          <h2>Lax-Wendroff Method</h2>
+          <h2>Lax-Wendroff Scheme</h2>
           <p>Let's see how it performs on our sample advection problem. Again, $v\Delta t = \Delta x$.</p>
           <video controls="" style="width: 50%;"><source src=
             "./lax_wendroff_gaussian.mp4" type="video/mp4"></video>
         </section>
 
         <section>
-          <h2>Lax-Wendroff Method</h2>
+          <h2>Lax-Wendroff Scheme</h2>
           <p>How about the box initial condition?</p>
           <video controls="" style="width: 50%;"><source src=
             "./lax_wendroff_box.mp4" type="video/mp4"></video>
