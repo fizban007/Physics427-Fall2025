@@ -122,15 +122,28 @@ while (t < t_end) {
           <h2>Data Output</h2>
           <p>How do we output the data?</p>
           <div class="fragment">
-            <p>One way is to write the data to a text file:</p>
+            <p>One way is to write the data to a binary file:</p>
             <div style="width: 80%; margin: auto;">
               <pre><code class="language-c++" data-trim data-noescape>
 void output(int n) {
-  std::ofstream f("data" + std::to_string(n) + ".csv");
-  for (int j = 0; j < Nx; j++) {
-    f << x[j] << "," << u[j] << std::endl;
-  }
+  std::ofstream f("data" + std::format("{:03d}", n) + ".bin");
+  f.write(reinterpret_cast<const char*>(u.data()), u.size() * sizeof(double));
+  f.close();
 }
+              </code></pre>
+            </div>
+            <p class="fragment">This will write the entire array <code>u</code> to a binary file.</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Data Output</h2>
+          <p>How do we read the binary data back?</p>
+          <div class="fragment">
+            <p>We can read the binary file in a Python script using the following code:</p>
+            <div style="width: 80%; margin: auto;">
+              <pre><code class="language-python" data-trim data-noescape>
+u = np.fromfile("data{n:03d}.bin", dtype=np.float64)
               </code></pre>
             </div>
           </div>
@@ -210,13 +223,14 @@ for (int i = 0; i < Nx; i++) {
 }
               </code></pre>
             </div>
+            <p class="fragment">What happens at the corners?</p>
           </div>
         </section>
 
         <section>
           <h2>Data Output</h2>
-          <p>CSV files can typically contain a single 2D matrix. More
-          sophisticated binary data format is often used to write multiple data components.</p>
+          <p>If you linearize your 2D array into 1D as discussed above, then
+          they can be written straightforwardly into a binary file using the same syntax.</p>
           <p class="fragment">
             In production use, the HDF5 data format is widely used in scientific
             computing. It is a portable binary data format that can store multiple data
