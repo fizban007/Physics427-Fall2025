@@ -104,7 +104,7 @@
 
         <section>
           <h2>Implicit FTCS</h2>
-          <p>The matrix $A$ associated with the implicit FTCS scheme is:</p>
+          <p>The matrix $A$ associated with the implicit FTCS scheme is (where $\alpha = D\Delta t/\Delta x^2$):</p>
           $$
           A = \begin{pmatrix}
             1 + 2\alpha & -\alpha & 0 & \cdots & 0 & 0 & 0 \\
@@ -128,7 +128,8 @@
           <p class="fragment">Since $\mathbf{A}$ is tri-diagonal, the easiest
             method is to use LU decomposition (see <a href="../Lecture 14/index.html">Lecture 14</a>). We only need to find its LU
           decomposition once, and then we can solve the linear system at every
-          time step applying the same LU matrices.</p>
+          time step applying the same LU matrices, one column at a time.
+          </p>
         </section>
 
         <section>
@@ -210,7 +211,7 @@
           $$
           \xi = \frac{1}{\displaystyle 1+i\left[\frac{2\Delta t}{\Delta x^2}\sin^2\left(\frac{k\Delta x}{2}\right) + V_j \Delta t\right]}
           $$
-          <p class="fragment">The scheme is unconditionally stable. However, it
+          <p class="fragment">The scheme is unconditionally stable. However, $|\xi|&lt;1$ in general, so it
             does not preserve amplitudes. In quantum mechanical language, it is not <em>unitary</em>.</p>
         </section>
 
