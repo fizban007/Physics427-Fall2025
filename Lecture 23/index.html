@@ -114,7 +114,7 @@
             $$
           </p>
           <p class="fragment">
-            The error of Monte Carlo integration scales with $1/\sqrt{N}$.
+            The relative error of Monte Carlo integration scales with $1/\sqrt{N}$.
           </p>
         </section>
 
@@ -285,7 +285,8 @@
           <p>How to choose the weight function $w(\mathbf{x})$?</p>
           <p class="fragment">
             We want to choose $w$ so that it is close to $f$, but relatively
-            easy to sample from.
+            easy to sample from. Often we can choose $w$ to capture the main
+            features of $f$, such as singularities or sharp peaks.
           </p>
         </section>
 
