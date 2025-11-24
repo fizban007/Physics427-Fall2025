@@ -25,18 +25,79 @@
 
         <section>
           <h2>Markov Chain Monte Carlo</h2>
-          <p>Last time, we discussed the Metropolis-Hastings algorithm for MCMC. The
-          ingredients for the algorithm are: a proposal distribution $g(x, x_n)$, and
-          an acceptance probability.</p>
+          <p>Last time, we discussed the Metropolis-Hastings algorithm for MCMC
+          applied to statistical mechanics:</p>
+          <ul>
+            <li class="fragment">Choose a random initial state</li>
+            <li class="fragment">Select a new state to move to according to a proposal distribution</li>
+            <li class="fragment">Compute the probability $P_a$ of accepting this move</li>
+            <li class="fragment">Draw a uniform random variable $u$ between $0$
+            and $1$, accept the move if $u < P_a$. Otherwise stay at the current state</li>
+            <li class="fragment">Go to the second step and repeat this procedure</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Markov Chain Monte Carlo</h2>
+          <p>MCMC is a very general method that can be used to sample from
+          arbitrary probability distributions. For continuous distributions, the
+          Markov Chain still consists of discrete steps $x_1$, $x_2$, $x_3$,
+          $\dots$</p>
           <p class="fragment">
-            For Metropolis-Hastings, the acceptance probability is:
-            $$
-              A(x, x_n) = \min\left(1, \frac{P(x)}{P(x_n)}\frac{g(x_n, x)}{g(x, x_n)}\right)
-            $$
+            The general Metropolis-Hastings algorithm consists of a "proposal distribution" $g(x,
+            x_n)$ of $x$ given $x_n$, and an "acceptance probability" $A(x, x_n)$.
           </p>
+        </section>
+
+        <section>
+          <h2>Markov Chain Monte Carlo</h2>
+          <p>The general recipe of the Metropolis algorithm is:</p>
+          <ul>
+            <li class="fragment">Given the variable value $x_n$ at step $n$, generate a new
+            candidate $x$ from the proposal distribution $g(x, x_n)$.</li>
+            <li class="fragment">Compute the acceptance probability:
+              $$
+              A(x, x_n) = \min\left(1, \frac{P(x)}{P(x_n)}\frac{g(x_n, x)}{g(x, x_n)}\right)
+              $$
+            </li>
+            <li class="fragment">Generate a uniform random number $0 < u < 1$.
+            If $u < A(x, x_n)$ then accept the new value as $x_{n+1}$. Otherwise reject it and
+            do nothing.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Markov Chain Monte Carlo</h2>
+          <p>In the context of statistical mechanics, the distribution we want
+          to sample is the Boltzmann distribution $P(E_i) \sim e^{-E_i/k_B T}$.
+          The proposal distribution is typically problem dependent, and the acceptance probability is:
+          $$
+            P_a = \begin{cases} 1 & \text{if }E_i > E_j \\
+            e^{-(E_j - E_i)/k_B T} & \text{if }E_i < E_j \end{cases}
+          $$</p>
+        </section>
+
+        <section>
+          <h2>Markov Chain Monte Carlo</h2>
+          <p>For general problems, choosing the proposal distribution $g(x,
+          x_n)$ is often an art. When chosen well, the Markov Chain can converge to the equilibrium
+          very quickly. When chosen badly, it never reaches the desired equilibrium.</p>
+          <p class="fragment">As a result, it is often not possible to directly predict the number of
+          steps required in the burn-in period. Trial-and-error is often needed.</p>
+        </section>
+
+        <section>
+          <h2>Markov Chain Monte Carlo</h2>
+          <p>Once a Markov Chain is burned-in, it can be used to easily generate
+          a series of random variables from the target distribution. These random variables can then be
+          used to compute the desired statistical properties of the distribution.</p>
           <p class="fragment">
-            If the proposal distribution $g(x, x_n)$ is symmetric, then the acceptance probabilty
-            reduces to $A(x, x_n) = \min(1, P(x)/P(x_n))$.
+            Back in statistical mechanics, the series of states after reaching thermal equilibrium is
+            an excellent collection of sampled states that can be used to compute the expectation value
+            of any physical quantity $X$:
+            $$
+            \langle X\rangle = \frac{1}{N}\sum_i X_i
+            $$
           </p>
         </section>
 
@@ -133,7 +194,7 @@
         <section>
           <h2>MCMC for Optimization</h2>
           <p>A rapidly cooled system can get stuck in a local energy minimum is
-            a fact known for centuries <span class="fragment">by blacksmiths and glassworkers!</span></p>
+            a fact known <em>for centuries</em> <span class="fragment">by blacksmiths and glassworkers!</span></p>
           <p class="fragment">
             The common strategy to mitigate this effect is to heat the object to high temperatures and
             let it cool down slowly. This process is called <em>annealing</em>,
