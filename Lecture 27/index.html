@@ -24,6 +24,23 @@
         </section>
 
         <section>
+          <h2>Markov Chain Monte Carlo</h2>
+          <p>Last time, we discussed the general Metropolis-Hastings algorithm for MCMC:</p>
+          <ul>
+            <li class="fragment">Given the variable value $x_n$ at step $n$, generate a new
+            candidate $x$ from the proposal distribution $g(x, x_n)$.</li>
+            <li class="fragment">Compute the acceptance probability:
+              $$
+              A(x, x_n) = \min\left(1, \frac{P(x)}{P(x_n)}\frac{g(x_n, x)}{g(x, x_n)}\right)
+              $$
+            </li>
+            <li class="fragment">Generate a uniform random number $0 < u < 1$.
+            If $u < A(x, x_n)$ then accept the new value as $x_{n+1}$. Otherwise reject it and
+            do nothing.</li>
+          </ul>
+        </section>
+
+        <section>
           <h2>Bayes Theorem</h2>
           <p>Bayesian inference is one of the major use cases for MCMC. I hope by the end
           of this lecture you will understand why.</p>
@@ -49,6 +66,15 @@
             disease is rare, and only 1 in 1000 people have it. If you take the test
             and it returns a positive result, what is the probability that you have
             the disease?
+          </p>
+          <p class="fragment">
+            The relevant probabilities are:
+            $$
+            \begin{align}
+              P(D) &= 0.001 \quad\quad P(+|D) = 0.99 \\
+              P(+) &= P(+|D)P(D) + P(+|\neg D)P(\neg D) = 0.99\times 0.001 + 0.01\times 0.999
+            \end{align}
+            $$
           </p>
         </section>
 
