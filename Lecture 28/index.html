@@ -20,220 +20,228 @@
     <div class="reveal">
       <div class="slides">
         <section>
-          <h2>Machine Learning</h2>
+          <h2>Parallel and Supercomputing</h2>
         </section>
 
         <section>
-          <h2>Machine Learning</h2>
-          <p>Machine learning is a field of artificial intelligence where
-          statistical methods are used to train machines to perform tasks
-          without explicit instructions.</p>
-          <p class="fragment">In recent years, ML has made significant progress:
-          AlphaGo, DALL E, ChatGPT, etc. Most of the recent progress has been
-          attributed to deep neural networks.</p>
+          <h2>Parallel Computing</h2>
+          <p>We have already used parallel computing in our projects in the form
+          of OpenMP. This enables parallelization over multiple cores within a
+          single shared-memory system.</p>
+          <p class="fragment">What should we do when a single shared-memory system is not enough?</p>
         </section>
 
         <section>
-          <h2>Neural Networks</h2>
-          <p>Neural networks are composed of layers of
-          "neurons". Each neuron is a function that takes in a vector of inputs
-          and outputs a scalar value.</p>
-          <img src="deep_neural_network.png" width="60%">
-          <!-- <p class="fragment">The output of a neuron is called an activation.
-               The activation of a neuron is computed by applying a non-linear
-               function to a linear combination of the inputs.</p> -->
+          <h2>GPUs</h2>
+          <p>Modern compute centers rely heavily on GPUs. They are effectively
+          massive parallel supercomputers on their own right.</p>
+          <p class="fragment">For example, the Nvidia RTX 5090 has 170 streaming
+          multiprocessors, which gives a total of 21,760 CUDA cores.</p>
+          <p class="fragment">Saturating the computational capabilities of such
+          a GPU will typically require launching $\gtrsim 100,000$ parallel threads at
+          the same time.</p>
         </section>
 
         <section>
-          <h2>Neural Networks</h2>
-          <p>Each neuron/node takes a linear combination of all the results from the
-          previous layer, optionally add some "bias", then applies an
-          "activation function" to it which introduces nonlinearity.</p>
-          <img src="neuron.png" width="50%">
+          <h2>GPUs</h2>
+          <a href="https://www.pulsarmagnetosphere.com/webgpu-blackhole/">GPU Raytracing</a>
         </section>
 
         <section>
-          <h2>Neural Networks</h2>
-          <p>Some common activation functions:</p>
+          <h2>Parallel Algorithms</h2>
+          <p>Not all algrithms can be easily parallelized. Which of the following is more
+          parallelizable?</p>
           <ul>
-            <li class="fragment">Sigmoid:
-              $
-              \displaystyle f(x) = \frac{1}{1 + e^{-x}}
-              $
+            <li class="fragment">Ray tracing an image.</li>
+            <li class="fragment">Matrix multiplication.</li>
+            <li class="fragment">Solving an ODE with RK4.</li>
+            <li class="fragment">Using MCMC to sample from some distribution.</li>
+            <li class="fragment">Solving a PDE with finite difference method.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Distributed Computing</h2>
+          <p>Parallelization over different machines on a network is often called "distributed computing".</p>
+          <p class="fragment">An extreme example is the SETI@Home project, which provides a desktop application
+          that people can download and run on their own computers. The application uses your idle CPU to do computation
+          and report to the server, in order to help find aliens.</p>
+        </section>
+
+        <section>
+          <h2>Distributed Computing</h2>
+          <p>A more common setting is a computational cluster that is connected to the same local network.</p>
+          <img src="frontier.jpg" width="50%">
+        </section>
+
+        <section>
+          <h2>Supercomputing</h2>
+          <!-- <img src="frontier.jpg" width="50%"> -->
+          <img src="./SC25ConferenceCenter-152.jpg" width="80%">
+        </section>
+
+        <section>
+          <h2>Supercomputing</h2>
+          <p>A cluster consists of individual "nodes", each of which is
+          basically a multi-core computer.</p>
+          <p class="fragment">
+            For example, each node on Frontier has 64 CPU cores, 512 GB of DDR4
+            RAM, and effectively 8 separate GPUs. These nodes are connected with a 800
+            Gbps network connection. Frontier has 9,408 nodes in total. The system can achieve
+            a sustained performance of 1.2 ExaFLOP/s.
+          </p>
+          <div class="fragment">
+            <a href="https://www.top500.org/lists/top500/2025/11/">TOP500 List</a>
+          </div>
+        </section>
+
+        <section>
+          <h2>Supercomputing</h2>
+          <p>How to program for supercomputers?</p>
+        </section>
+
+        <section>
+          <h2>Supercomputing</h2>
+          <p>The standard protocol for communication between computing nodes is
+          the Message-Passing Interface (MPI). MPI provides a collection of
+          functions to send and receive serialized data between nodes.</p>
+          <div class="fragment">
+            <code>int MPI_Send(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm)</code>
+          </div>
+          <div class="fragment">
+            <code>int MPI_Recv(void *buf, int count, MPI_Datatype datatype, int source, int tag,
+             MPI_Comm comm, MPI_Status *status)</code>
+          </div>
+        </section>
+
+        <section>
+          <h2>Supercomputing</h2>
+          <p>To parallelize a simulation (e.g. fluid simulation or other PDE solver), the
+          computational domain is often decomposed into chunks that are assigned to different
+          MPI ranks:</p>
+          <img src="Domain-decomposition.png" width="50%">
+        </section>
+
+        <section>
+          <h2>Supercomputing</h2>
+          <p>Each subdomain is surrounded by ghost cells, which hold the information from
+          the neighboring subdomain. After each update, the content of the ghost cells are
+          updated to reflect the new values from the neighbors.</p>
+          <p class="fragment">The way we implemented periodic boundary conditions in Project 2
+          is an example of such communication, except that we were communicating with ourselves.</p>
+        </section>
+
+        <section>
+          <h2>Supercomputing</h2>
+          <p>Challenges to distributed supercomputing:</p>
+          <ul>
+            <li class="fragment">
+              Designing algorithms that can parallelize well.
             </li>
-            <li class="fragment">Hyperbolic tangent:
-              $
-              \displaystyle f(x) = \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
-              $
+            <li class="fragment">
+              Balancing the load among computational nodes.
             </li>
-            <li class="fragment">Rectified Linear Unit (ReLU):
-              $
-              \displaystyle f(x) = \max(0, x)
-              $
+            <li class="fragment">
+              Parallelized data output and large-scale data visualization.
             </li>
           </ul>
         </section>
 
         <section>
-          <h2>Neural Networks</h2>
-          <p>Given a network shape and the corresponding weights and biases, a
-          deep neural network has the potential to approximate any nonlinear
-          function.</p>
-          <p class="fragment">But how does a neural network learn? In other words,
-          how to find the best weights $w_i$ and biases $b_i$?</p>
-        </section>
-
-        <section>
-          <h2>Training Neural Networks</h2>
-          <p>Given some training input and output data, the training of a neural
-          network works by updating the network weights iteratively, minimizing
-          the error on the output:</p>
+          <h2>Scaling</h2>
+          <p>How does computational time scale with the problem size?</p>
+          <p class="fragment">For example, if we double the number of grid
+          points in a 1D simulation, how much longer does it take to run the
+          simulation?</p>
           <p class="fragment">
-            $$
-            w_i^{\mathrm{new}} = w_i^{\mathrm{old}} - a \frac{\partial \varepsilon}{\partial w_i}
-            $$
+            Due to the CFL condition, the time step must also be reduced by a
+            factor of 2. Therefore, the total simulation time scales as at least $N^2$.
           </p>
           <p class="fragment">
-            This is called "gradient descent" method. The partial derivative
-            $\partial \varepsilon / \partial w_i$ is the gradient of the error
-            with respect to the weight $w_i$.
+            For 3D problems, doubling the number of grid points in each
+            dimension increases the total computational time by a factor of at
+            least 16! This is the <em>curse of dimensionality</em>.
           </p>
           <p class="fragment">
-            The parameter $a$ is called the "learning rate".
+            This is only the ideal scaling. In practice, there are often additional
+            factors that make the scaling even worse.
           </p>
         </section>
 
         <section>
-          <h2>Training Neural Networks</h2>
-          <p>How to compute the partial derivatives $\partial \varepsilon / \partial w_i$?</p>
+          <h2>Parallel Scaling</h2>
+          <p>When scaling to large supercomputers, it is important to talk about
+            how a specific code will scale. There are two types: <em>strong scaling</em> and <em>weak scaling</em>.</p>
+        </section>
+
+        <section>
+          <h2>Amdahl's Law</h2>
+          <p>In parallel computing, Amdahl's law gives the theoretical speedup
+          for the execution of a fixed task when more and more processors.</p>
           <p class="fragment">
-            The typical procedure is called "backpropagation". It uses the
-            partial derivatives of intermediate steps to compute the partial
-            derivative with respect to every weight.
-          </p>
-          <p class="fragment">
-            Automatic Differentiation is the go-to method (<a href="../Lecture 17.5/index.html#/17">Lecture 17.5</a>)
-            for computing and storing all the intermediate derivatives. It uses the chain rule repeatedly to compute
-            the derivatives at every step, going backwards from the result to the original input.
-          </p>
-        </section>
-
-        <section>
-          <h2>Training Neural Networks</h2>
-          <p>Let's work out a very simple network step by step to see how backpropagation works:</p>
-          <img src="nn_example.png" width="60%">
-        </section>
-
-        <section>
-          <h2>Training Neural Networks</h2>
-          <p>The diagram describes the following mathematical expressions:
-          $$
-            \begin{align}
-            h_1 &= f(w_{11}i_1 + w_{12}i_2) \\
-            h_2 &= f(w_{21}i_1 + w_{22}i_2) \\
-            o &= f(w_{o1}h_1 + w_{o2}h_2)
-            \end{align}
-          $$</p>
-          <p class="fragment">$f$ is the activation function we choose. We will
-          use $f(x) = \tanh(x)$. I chose to not add any biases.</p>
-        </section>
-
-        <section>
-          <h2>Training Neural Networks</h2>
-          <p>The training error is often called the "loss function" or "cost
-          function". A typical choice is the mean-squared error:
+            Suppose $0\leq p\leq 1$ is the portion of the program that is parallelizable. The
+            total speedup when using $n$ parallel processors can be estimated as:
             $$
-            \varepsilon_\mathrm{MSE} = \sum_i \left(o_i - t_i\right)^2
-            $$
-          </p>
-          <p class="fragment">Since our network gives only one output, the error is simply
-          $$
-            \varepsilon_\mathrm{MSE} = (o - t)^2
-          $$</p>
-        </section>
-
-        <section>
-          <h2>Training Neural Networks</h2>
-          <p>The partial derivatives with respect to the two final weights can be written as:
-            $$
-            \frac{\partial \varepsilon}{\partial w_{o1}} = \frac{\partial \varepsilon}{\partial o}
-            \frac{\partial o}{\partial w_{o1}} = \frac{1}{2}(o - t)h_1f'(w_{o1}h_1 + w_{o2}h_2)
+            S = \frac{1}{(1 - p) + p / n}
             $$
           </p>
           <p class="fragment">
-            $$
-            \frac{\partial \varepsilon}{\partial w_{o2}} = \frac{\partial \varepsilon}{\partial o}
-            \frac{\partial o}{\partial w_{o2}} = \frac{1}{2}(o - t)\,h_2f'(w_{o1}h_1 + w_{o2}h_2)
-            $$
+            Even in the limit of $n\to \infty$, the maximum speedup that can be achieved is
+            still $S \approx 1/(1 - p)$. If $p = 0.9$, $S$ is at most 10.
           </p>
         </section>
 
         <section>
-          <h2>Training Neural Networks</h2>
-          <p>The partial derivatives with respect to earlier weights are slightly more involved:
-          $$
-            \begin{align}
-            \frac{\partial \varepsilon}{\partial w_{11}} &= \frac{\partial \varepsilon}{\partial o}
-            \frac{\partial o}{\partial h_1}\frac{\partial h_1}{\partial w_{11}} \\
-            &= \frac{1}{2}(o - t)\,w_{o1}f'(w_{o1}h_1 + w_{o2}h_2)\,i_1f'(w_{11}i_1 + w_{12}i_2)
-            \end{align}
-          $$</p>
-          <p class="fragment">Similar for other derivatives with respect to
-          $w_{12}$, $w_{21}$, and $w_{22}$.</p>
-        </section>
-
-        <section>
-          <h2>Training Neural Networks</h2>
-          <p>Given a training data point with input $\{i_1, i_2\}$ and output
-          target $t$, we run many epochs of backpropagation to minimize the
-          mean-squared difference between the network output $o$ and the training target $t$:
-          $$
-            w_i^{\mathrm{new}} = w_i^{\mathrm{old}} - a \frac{\partial \varepsilon_\mathrm{MSE}}{\partial w_i}
-          $$</p>
-          <p class="fragment">In practice, all the derivatives are automatically
-          computed during network evaluation, which allow the backpropagation process
-          simply using those stored derivatives.</p>
-        </section>
-
-        <section>
-          <h2>Types of Learning</h2>
-          <p>What we have discussed is "supervised learning", where the neural network learns
-          a certain model by minimizing the error on the training data.</p>
-          <p class="fragment">"Unsupervised learning" does not include a set of
-          output data for the model to train on. Instead, the loss functions are
-          often intrinsic statistical properties of the model. In the generative
-          case of Large Language Models (LLM) or text-to-image models, the loss functions are
-          often measured by how well the outputs from the model reproduces training input data.</p>
-          <p class="fragment">"Reinforcement learning" trains through
-            trial-and-error instead of direct backpropagation. It is often used
-            with Monte Carlo methods where agents are simulate <em>en masse</em> to find the
-            optimal decision-making process.
-        </section>
-
-        <section>
-          <h2>Software Packages</h2>
-          <p>Nowadays many software frameworks for machine learning exist: Tensorflow, PyTorch, Keras,
-          Caffe, etc.</p>
-          <p class="fragment">GPUs are the main platform for training large
-          models, due to their computational power and optimizations. The Nvidia GTC used to
-          focus on graphics and computing. Now it's mostly AI!</p>
-        </section>
-
-        <section>
-          <h2>Physics Informed Neural Network</h2>
-        </section>
-
-        <section>
-          <h2>Physics Informed Neural Network</h2>
-          <p>Physics Informed Neural Network (PINN) is a recent development in
-            the field of machine learning. It combines the power of neural networks
-            with the physical constraints of the problem.</p>
+          <h2>Amdahl's Law</h2>
+          <p>Amdahl's law assumes breaking down a fixed-size problem into
+          smaller and smaller parallel pieces. This process is called "strong
+          scaling".</p>
           <p class="fragment">
-            A PINN is simply a supervised learning problem where the loss function
-            includes the physical constraints of the problem. For example, in a fluid
-            dynamics problem, the loss function can include the Navier-Stokes equations as well
-            as appropriate boundary conditions.
+            It is often difficult to find perfect scaling in this limit, as any
+            finite-size problem may have a fixed portion that is not parallelizable, which
+            limit the parallel speedup.
           </p>
+        </section>
+
+        <section>
+          <h2>Gustafson's Law</h2>
+          <p>Gustafson's law gives the theoretical speedup of a problem using
+            parallel computing when the problem size also increases with the
+            number of processors.
+          </p>
+          <p class="fragment">
+            Again suppose that $0 \leq p \leq 1$ is the portion of the program
+            that is parallelizable. The total speedup when using $n$ parallel
+            processors compared to using only one processor is:
+            $$
+            S = (1 - p) + p\times n
+            $$
+          </p>
+          <p class="fragment">
+            In other words, the non-parallel portion of the program does not
+            change much with the increasing number of processors.
+            Solve a bigger problem using more processors will make the non-parallel part
+            less important.
+          </p>
+        </section>
+
+        <section>
+          <h2>Gustafson's Law</h2>
+          <p>Gustafson's law describes "weak scaling", where the problem size scales with the
+          number of parallel processors, while the workload on each processor stays the same.
+          This is the more typical way to take advantage of larger amounts of computational
+          resources.</p>
+          <p class="fragment">However, certain algorithms may not scale linearly with problem
+          size (e.g. matrix multiplication). In that case, weak scaling does not work as well
+          as the ideal Gustafson's law.</p>
+        </section>
+
+        <section>
+          <h2>Parallel Scaling</h2>
+          <p>When applying for supercomputer resources, it is often required to
+          demonstrate the scaling properties of your code, so that it can adapt well to the
+          massive parallel structure of the machine.</p>
+          <img src="./weak_scaling.png" width="50%">
         </section>
 
       </div>
